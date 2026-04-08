@@ -588,3 +588,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **🚀 Ready for production deployment!**  
 
 Made with ❤️ using .NET 8, Blazor, and Azure services
+#   - R e e n b i t - T r a i n e e - C a m p - B a c k - E n d - D e v e l o p m e n t - . N e t - _ s p r i n g _ 2 0 2 6  
+ 
