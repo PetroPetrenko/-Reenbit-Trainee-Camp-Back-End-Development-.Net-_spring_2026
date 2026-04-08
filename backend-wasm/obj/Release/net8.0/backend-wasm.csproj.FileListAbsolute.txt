@@ -1,0 +1,8 @@
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.csproj.AssemblyReference.cache
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\rpswa.dswa.cache.json
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.GeneratedMSBuildEditorConfig.editorconfig
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.AssemblyInfoInputs.cache
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.AssemblyInfo.cs
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.csproj.CoreCompileInputs.cache
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.MvcApplicationPartsAssemblyInfo.cs
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\obj\Release\net8.0\backend-wasm.MvcApplicationPartsAssemblyInfo.cache

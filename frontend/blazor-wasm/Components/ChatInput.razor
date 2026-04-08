@@ -1,0 +1,67 @@
+<div class="chat-input">
+    <div class="input-group">
+        <input @bind="userName" 
+               class="form-control user-input" 
+               placeholder="Your name" 
+               @oninput="OnUserNameChanged" />
+        <input @bind="messageText" 
+               class="form-control message-input" 
+               placeholder="Type your message..." 
+               @onkeydown="@(e => { if(e.Key == "Enter") Send(); })" 
+               @oninput="OnMessageChanged" />
+        <button class="btn btn-primary send-button" 
+                @onclick="Send" 
+                disabled="@isSending">
+            @if (isSending)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
+            Send
+        </button>
+    </div>
+    <div class="char-count">
+        <small>@messageText.Length / 500 characters</small>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback<(string user, string text)> OnSend { get; set; }
+
+    private string userName = "User" + new Random().Next(1, 1000);
+    private string messageText = string.Empty;
+    private bool isSending = false;
+
+    private void OnUserNameChanged(ChangeEventArgs e)
+    {
+        userName = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void OnMessageChanged(ChangeEventArgs e)
+    {
+        var text = e.Value?.ToString() ?? string.Empty;
+        if (text.Length <= 500)
+        {
+            messageText = text;
+        }
+    }
+
+    private async Task Send()
+    {
+        if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(messageText))
+        {
+            return;
+        }
+
+        isSending = true;
+        
+        try
+        {
+            await OnSend.InvokeAsync((userName.Trim(), messageText.Trim()));
+            messageText = string.Empty;
+        }
+        finally
+        {
+            isSending = false;
+        }
+    }
+}

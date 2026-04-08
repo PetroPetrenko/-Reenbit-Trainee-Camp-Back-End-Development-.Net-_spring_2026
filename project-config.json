@@ -1,0 +1,211 @@
+{
+  "project": {
+    "name": "Real-time Chat with Sentiment Analysis",
+    "description": "Senior-level project using ASP.NET Core 8 backend and Blazor WASM frontend, integrated with Azure SignalR and Azure Cognitive Services for real-time sentiment analysis.",
+    "version": "1.0.0",
+    "status": "production-ready"
+  },
+  "technologies": {
+    "backend": ["ASP.NET Core 8", "Entity Framework Core 8", "SignalR", "Azure Cognitive Services", "Repository Pattern", "Unit of Work"],
+    "frontend": ["Blazor WebAssembly", "SignalR Client", "Responsive CSS", "Component Architecture"],
+    "database": ["Azure SQL Database", "SQL Server", "EF Core Migrations"],
+    "devops": ["Docker", "Docker Compose", "GitHub Actions", "Azure Web Apps", "Azure DevOps"],
+    "architecture": ["Clean Architecture", "SOLID Principles", "C4 Model", "Microservices Ready"]
+  },
+  "features": [
+    {
+      "name": "Real-time Messaging",
+      "description": "Instant message delivery using SignalR WebSocket connections",
+      "status": "implemented",
+      "components": ["ChatHub", "ChatService", "SignalR Client"]
+    },
+    {
+      "name": "Sentiment Analysis",
+      "description": "AI-powered sentiment analysis using Azure Cognitive Services Text Analytics",
+      "status": "implemented",
+      "components": ["SentimentService", "TextAnalyticsClient", "Message Sentiment UI"]
+    },
+    {
+      "name": "Persistent Storage",
+      "description": "Message persistence in Azure SQL Database with EF Core",
+      "status": "implemented",
+      "components": ["AppDbContext", "MessageRepository", "UnitOfWork"]
+    },
+    {
+      "name": "Responsive UI",
+      "description": "Mobile-friendly interface with sentiment-based color coding",
+      "status": "implemented",
+      "components": ["MessageItem", "ChatInput", "CSS Responsive Design"]
+    },
+    {
+      "name": "Docker Support",
+      "description": "Complete containerization for consistent deployment",
+      "status": "implemented",
+      "components": ["Dockerfile", "docker-compose.yml", "Multi-stage builds"]
+    },
+    {
+      "name": "CI/CD Pipeline",
+      "description": "Automated build, test, and deployment with GitHub Actions",
+      "status": "implemented",
+      "components": ["GitHub Actions", "Azure Deployment", "Automated Testing"]
+    }
+  ],
+  "architecture": {
+    "pattern": "Clean Architecture",
+    "layers": [
+      {
+        "name": "Presentation Layer",
+        "components": ["Controllers", "SignalR Hubs", "Blazor Components"]
+      },
+      {
+        "name": "Application Layer",
+        "components": ["Services", "Interfaces", "DTOs"]
+      },
+      {
+        "name": "Domain Layer",
+        "components": ["Entities", "Enums", "Domain Models"]
+      },
+      {
+        "name": "Infrastructure Layer",
+        "components": ["DbContext", "Repositories", "External Services"]
+      }
+    ],
+    "design_patterns": ["Repository", "Unit of Work", "Dependency Injection", "Factory"],
+    "solid_principles": ["Single Responsibility", "Open/Closed", "Liskov Substitution", "Interface Segregation", "Dependency Inversion"]
+  },
+  "api_endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/chat/send",
+      "description": "Send a new message with sentiment analysis",
+      "request": {
+        "user": "string",
+        "text": "string"
+      },
+      "response": "Message object with sentiment scores"
+    },
+    {
+      "method": "GET",
+      "path": "/api/chat/messages",
+      "description": "Retrieve recent messages",
+      "parameters": {
+        "count": "int (default: 50)"
+      },
+      "response": "Array of Message objects"
+    }
+  ],
+  "signalr_hubs": [
+    {
+      "name": "ChatHub",
+      "methods": ["JoinChat", "LeaveChat"],
+      "events": ["ReceiveMessage", "UserJoined", "UserLeft"],
+      "url": "/chathub"
+    }
+  ],
+  "database": {
+    "provider": "SQL Server / Azure SQL",
+    "orm": "Entity Framework Core 8",
+    "migrations": "Code First with automatic migrations",
+    "tables": [
+      {
+        "name": "Messages",
+        "columns": [
+          {"name": "Id", "type": "int", "primary_key": true},
+          {"name": "User", "type": "nvarchar(100)", "required": true},
+          {"name": "Text", "type": "nvarchar(max)", "required": true},
+          {"name": "Timestamp", "type": "datetime2", "required": true},
+          {"name": "Sentiment", "type": "nvarchar(20)", "default": "neutral"},
+          {"name": "PositiveScore", "type": "float", "default": 0},
+          {"name": "NegativeScore", "type": "float", "default": 0}
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "environments": {
+      "development": {
+        "type": "Docker Compose",
+        "services": ["backend", "frontend", "database"],
+        "ports": {"backend": 5001, "frontend": 5000, "database": 1433}
+      },
+      "production": {
+        "type": "Azure Web Apps",
+        "services": ["Azure Web App (Backend)", "Azure Web App (Frontend)", "Azure SQL Database"],
+        "additional": ["Azure SignalR Service", "Azure Cognitive Services"]
+      }
+    },
+    "ci_cd": {
+      "platform": "GitHub Actions",
+      "workflows": ["build.yml", "deploy-backend.yml", "deploy-frontend.yml"],
+      "triggers": ["push to main", "pull requests"],
+      "secrets": ["AZURE_WEBAPP_BACKEND_PUBLISH_PROFILE", "AZURE_WEBAPP_FRONTEND_PUBLISH_PROFILE", "AZURE_SQL_CONNECTION_STRING"]
+    }
+  },
+  "testing": {
+    "unit_tests": {
+      "framework": "xUnit",
+      "coverage": ["Services", "Repositories", "Controllers"],
+      "mocking": "Moq"
+    },
+    "integration_tests": {
+      "framework": "ASP.NET Core Testing",
+      "coverage": ["API Endpoints", "Database Integration"]
+    },
+    "performance_tests": {
+      "tools": ["Apache Benchmark", "k6"],
+      "metrics": ["Response Time", "Throughput", "Memory Usage"]
+    }
+  },
+  "monitoring": {
+    "logging": {
+      "framework": "Microsoft.Extensions.Logging",
+      "providers": ["Console", "Debug", "Application Insights (optional)"],
+      "levels": ["Information", "Warning", "Error"]
+    },
+    "health_checks": {
+      "endpoints": ["/health", "/health/ready", "/health/live"],
+      "checks": ["Database Connection", "SignalR Status", "External Services"]
+    },
+    "metrics": {
+      "application": ["Request Count", "Response Time", "Error Rate"],
+      "infrastructure": ["CPU Usage", "Memory Usage", "Database Connections"]
+    }
+  },
+  "security": {
+    "authentication": {
+      "current": "None (Future: Azure AD)",
+      "planned": ["JWT Tokens", "Azure AD B2C"]
+    },
+    "authorization": {
+      "current": "Open API",
+      "planned": ["Role-based Access", "API Keys"]
+    },
+    "data_protection": [
+      "Input Validation",
+      "SQL Injection Prevention",
+      "HTTPS Enforcement",
+      "CORS Configuration"
+    ]
+  },
+  "documentation": {
+    "api": "Swagger/OpenAPI 3.0",
+    "architecture": "C4 Model with Mermaid Diagrams",
+    "deployment": "Step-by-step Azure deployment guide",
+    "development": "Local development setup with Docker"
+  },
+  "future_enhancements": [
+    "User Authentication with Azure AD",
+    "Mobile App with .NET MAUI",
+    "File Sharing Capabilities",
+    "Message Reactions and Threading",
+    "Multi-language Support",
+    "Analytics Dashboard",
+    "Event Sourcing with Azure Event Hub",
+    "Microservices Architecture",
+    "Advanced Testing with Playwright",
+    "Real-time Analytics with Power BI",
+    "Feature Flags with Azure App Configuration"
+  ],
+  "generated_at": "2025-04-04T03:31:00Z",
+  "version": "1.0.0"
+}

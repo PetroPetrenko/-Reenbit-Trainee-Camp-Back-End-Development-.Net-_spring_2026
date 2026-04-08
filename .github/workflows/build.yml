@@ -1,0 +1,70 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies (Backend)
+      run: dotnet restore backend-wasm/backend-wasm.csproj
+
+    - name: Restore dependencies (Frontend)
+      run: dotnet restore frontend/blazor-wasm/frontend-blazor-wasm.csproj
+
+    - name: Build Backend
+      run: dotnet build backend-wasm/backend-wasm.csproj --no-restore --configuration Release
+
+    - name: Build Frontend
+      run: dotnet build frontend/blazor-wasm/frontend-blazor-wasm.csproj --no-restore --configuration Release
+
+    - name: Test Backend
+      run: dotnet test backend-wasm/backend-wasm.csproj --no-build --configuration Release --verbosity normal
+
+    - name: Test Frontend
+      run: dotnet test frontend/blazor-wasm/frontend-blazor-wasm.csproj --no-build --configuration Release --verbosity normal
+
+    - name: Run E2E Tests
+      run: |
+        cd backend-wasm/src/Tests
+        dotnet tool install --global Microsoft.Playwright.CLI
+        playwright install
+        dotnet test --configuration Release --logger "trx;LogFileName=test_results.trx" --verbosity normal
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: backend-wasm/src/Tests/TestResults/
+
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: backend-wasm/src/Tests/playwright-report/
+
+    - name: Upload Backend Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend-artifacts
+        path: backend-wasm/src/WebApi/bin/Release/net8.0/publish/
+
+    - name: Upload Frontend Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: frontend-artifacts
+        path: frontend/blazor-wasm/bin/Release/net8.0/publish/

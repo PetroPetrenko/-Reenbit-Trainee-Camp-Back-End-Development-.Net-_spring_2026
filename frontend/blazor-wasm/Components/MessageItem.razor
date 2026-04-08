@@ -1,0 +1,39 @@
+@using frontend_blazor_wasm.Services
+
+<div class="message-item" style="background-color: @GetBackgroundColor(Message.Sentiment)">
+    <div class="message-header">
+        <strong class="message-user">@Message.User</strong>
+        <span class="message-time">@Message.Timestamp.ToLocalTime().ToString("HH:mm")</span>
+    </div>
+    <div class="message-text">@Message.Text</div>
+    @if (Message.User != "System")
+    {
+        <div class="sentiment-info">
+            <span class="sentiment-label">@GetSentimentEmoji(Message.Sentiment) @Message.Sentiment</span>
+            <div class="sentiment-scores">
+                <span class="positive-score">👍 @Message.PositiveScore.ToString("P0")</span>
+                <span class="negative-score">👎 @Message.NegativeScore.ToString("P0")</span>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Message Message { get; set; } = default!;
+
+    private string GetBackgroundColor(string sentiment) => sentiment switch
+    {
+        "positive" => "#d4edda",
+        "negative" => "#f8d7da",
+        "mixed" => "#fff3cd",
+        _ => "#e2e3e5"
+    };
+
+    private string GetSentimentEmoji(string sentiment) => sentiment switch
+    {
+        "positive" => "😊",
+        "negative" => "😔",
+        "mixed" => "😐",
+        _ => "😐"
+    };
+}

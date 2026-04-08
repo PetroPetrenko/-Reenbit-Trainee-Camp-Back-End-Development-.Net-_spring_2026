@@ -1,0 +1,6 @@
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\Tests.csproj.AssemblyReference.cache
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\MvcTestingAppManifest.json
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\Tests.GeneratedMSBuildEditorConfig.editorconfig
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\Tests.AssemblyInfoInputs.cache
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\Tests.AssemblyInfo.cs
+E:\TestTask\reenebit\spring2026\Net\backend-wasm\src\Tests\obj\Release\net8.0\Tests.csproj.CoreCompileInputs.cache

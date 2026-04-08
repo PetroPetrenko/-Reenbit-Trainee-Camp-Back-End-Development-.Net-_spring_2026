@@ -1,0 +1,129 @@
+@page "/chat"
+@inject ChatService ChatService
+@implements IAsyncDisposable
+
+<PageTitle>Chat Room</PageTitle>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h3>Real-time Chat with Sentiment Analysis</h3>
+        <div class="connection-status">
+            @if (isConnected)
+            {
+                <span class="status-connected">🟢 Connected</span>
+            }
+            else
+            {
+                <span class="status-disconnected">🔴 Disconnected</span>
+            }
+        </div>
+    </div>
+
+    <div class="messages-container" ref="messagesContainer">
+        @foreach (var msg in messages)
+        {
+            <MessageItem Message="msg" />
+        }
+    </div>
+
+    <div class="input-container">
+        <ChatInput OnSend="@SendMessage" />
+    </div>
+</div>
+
+@code {
+    private List<Message> messages = new();
+    private bool isConnected = false;
+    private ElementReference messagesContainer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Subscribe to events
+        ChatService.OnMessageReceived += OnMessageReceived;
+        ChatService.OnUserJoined += OnUserJoined;
+        ChatService.OnUserLeft += OnUserLeft;
+
+        // Start SignalR connection
+        await ChatService.StartAsync();
+        isConnected = true;
+
+        // Load recent messages
+        try
+        {
+            messages = await ChatService.GetMessagesAsync(50);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading messages: {ex.Message}");
+        }
+    }
+
+    private async Task OnMessageReceived(Message msg)
+    {
+        messages.Add(msg);
+        await InvokeAsync(StateHasChanged);
+        await ScrollToBottom();
+    }
+
+    private async Task OnUserJoined(string user)
+    {
+        var joinMsg = new Message
+        {
+            User = "System",
+            Text = $"{user} joined the chat",
+            Sentiment = "neutral",
+            PositiveScore = 0,
+            NegativeScore = 0,
+            Timestamp = DateTime.UtcNow
+        };
+        
+        messages.Add(joinMsg);
+        await InvokeAsync(StateHasChanged);
+        await ScrollToBottom();
+    }
+
+    private async Task OnUserLeft(string user)
+    {
+        var leaveMsg = new Message
+        {
+            User = "System",
+            Text = $"{user} left the chat",
+            Sentiment = "neutral",
+            PositiveScore = 0,
+            NegativeScore = 0,
+            Timestamp = DateTime.UtcNow
+        };
+        
+        messages.Add(leaveMsg);
+        await InvokeAsync(StateHasChanged);
+        await ScrollToBottom();
+    }
+
+    private async Task SendMessage(string user, string text)
+    {
+        try
+        {
+            await ChatService.SendMessageAsync(user, text);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending message: {ex.Message}");
+        }
+    }
+
+    private async Task ScrollToBottom()
+    {
+        await Task.Delay(100); // Small delay to ensure DOM is updated
+        await messagesContainer.ScrollToAsync(0, messagesContainer.ScrollHeight);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        ChatService.OnMessageReceived -= OnMessageReceived;
+        ChatService.OnUserJoined -= OnUserJoined;
+        ChatService.OnUserLeft -= OnUserLeft;
+        
+        await ChatService.StopAsync();
+    }
+}
