@@ -1,53 +1,53 @@
-# 🚀 Автоматическое развертывание на Azure
+# 🚀 Azure Deployment Guide
 
-## 📋 Подготовка
+## 📋 Prerequisites
 
-### 1. Установка Azure CLI
+### 1. Install Azure CLI
 ```powershell
-# Установка через PowerShell (Admin)
+# Install via PowerShell (Admin)
 Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile AzureCLI.msi
 Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 ```
 
-### 2. Вход в Azure
+### 2. Azure Login
 ```powershell
-# Интерактивный вход (откроется браузер)
+# Interactive login (browser will open)
 az login
 
-# Или вход с tenant ID
+# Or login with tenant ID
 az login --tenant "72f988bf-86f1-41af-91ab-2d7cd011db47"
 ```
 
-### 3. Проверка подписки
+### 3. Verify Subscription
 ```powershell
 az account show --query "{name: name, id: id, tenantId: tenantId}"
 ```
 
-## 🚀 Развертывание
+## 🚀 Deployment
 
-### Автоматическое развертывание (PowerShell)
+### Automated Deployment (PowerShell)
 ```powershell
-# Запуск скрипта развертывания
+# Run deployment script
 .\deploy-azure-auto.ps1
 ```
 
-### Автоматическое развертывание (Bash)
+### Automated Deployment (Bash)
 ```bash
-# Для Linux/macOS/WSL
+# For Linux/macOS/WSL
 chmod +x deploy-azure-auto.sh
 ./deploy-azure-auto.sh
 ```
 
-## 🧪 Проверка работоспособности
+## 🧪 Verification
 
-После развертывания (2-3 минуты):
+After deployment (2-3 minutes):
 
 ```powershell
-# Проверка развернутого приложения
+# Verify deployed application
 .\test-deployment.ps1 -FrontendUrl "https://chatapp-frontend-xxx.azurewebsites.net" -BackendUrl "https://chatapp-backend-xxx.azurewebsites.net"
 ```
 
-## 📊 Что будет создано
+## 📊 What Will Be Created
 
 ### Azure Resources:
 - **Resource Group**: `ChatAppResourceGroup`
@@ -59,66 +59,66 @@ chmod +x deploy-azure-auto.sh
 - **Cognitive Services**: `chat-sentiment-{unique}`
 
 ### Configuration:
-- ✅ Connection strings настроены
-- ✅ CORS включен
-- ✅ Application settings установлены
-- ✅ База данных создана
-- ✅ Миграции применены
+- ✅ Connection strings configured
+- ✅ CORS enabled
+- ✅ Application settings set
+- ✅ Database created
+- ✅ Migrations applied
 
-## 🔗 Доступные URL после развертывания
+## 🔗 Available URLs After Deployment
 
 - **Frontend**: `https://chatapp-frontend-{unique}.azurewebsites.net`
 - **Backend API**: `https://chatapp-backend-{unique}.azurewebsites.net`
 - **Swagger Docs**: `https://chatapp-backend-{unique}.azurewebsites.net/swagger`
-- **SignalR**: Автоматически настроен
+- **SignalR**: Automatically configured
 - **Database**: `{server}.database.windows.net`
 
-## 🛠️ Управление ресурсами
+## 🛠️ Resource Management
 
-### Просмотр логов
+### View Logs
 ```powershell
-# Логи бэкенда
+# Backend logs
 az webapp log tail --name chatapp-backend-{unique} --resource-group ChatAppResourceGroup
 
-# Логи фронтенда
+# Frontend logs
 az webapp log tail --name chatapp-frontend-{unique} --resource-group ChatAppResourceGroup
 ```
 
-### Перезапуск приложений
+### Restart Applications
 ```powershell
 az webapp restart --name chatapp-backend-{unique} --resource-group ChatAppResourceGroup
 az webapp restart --name chatapp-frontend-{unique} --resource-group ChatAppResourceGroup
 ```
 
-### Обновление настроек
+### Update Settings
 ```powershell
 az webapp config appsettings set --name chatapp-backend-{unique} --resource-group ChatAppResourceGroup --settings "KEY=VALUE"
 ```
 
-## 🗑️ Удаление ресурсов (если нужно)
+## 🗑️ Cleanup (If Needed)
 ```powershell
 az group delete --name ChatAppResourceGroup --yes --no-wait
 ```
 
-## ⚠️ Важные замечания
+## ⚠️ Important Notes
 
-1. **Время развертывания**: 5-10 минут
-2. **Стоимость**: Используются бесплатные/дешевые tier'ы (B1, F0)
-3. **Безопасность**: Пароли и ключи хранятся в App Settings
-4. **Масштабирование**: Можно масштабировать через Azure Portal
+1. **Deployment Time**: 5-10 minutes
+2. **Cost**: Uses free/cheap tiers (B1, F0)
+3. **Security**: Passwords and keys stored in App Settings
+4. **Scaling**: Can be scaled via Azure Portal
 
-## 🆘 Поддержка
+## 🆘 Support
 
-Если возникнут проблемы:
-1. Проверьте статус развертывания: `az group show --name ChatAppResourceGroup`
-2. Посмотрите логи приложений
-3. Проверьте настройки CORS и connection strings
-4. Убедитесь что все ресурсы созданы в одном регионе
+If issues arise:
+1. Check deployment status: `az group show --name ChatAppResourceGroup`
+2. View application logs
+3. Verify CORS settings and connection strings
+4. Ensure all resources are in the same region
 
-## 📈 Мониторинг
+## 📈 Monitoring
 
-После развертывания можно настроить:
-- Application Insights для мониторинга
-- Azure Monitor для метрик
-- Log Analytics для логов
-- Alerts для уведомлений
+After deployment, you can set up:
+- Application Insights for monitoring
+- Azure Monitor for metrics
+- Log Analytics for logs
+- Alerts for notifications

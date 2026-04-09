@@ -1,28 +1,28 @@
 # 🚀 GitHub Deployment Instructions
 
-## 📋 Создание репозитория на GitHub
+## 📋 Creating Repository on GitHub
 
-### 1. Создайте репозиторий вручную:
-1. Перейдите на https://github.com/new
+### 1. Create Repository Manually:
+1. Go to https://github.com/new
 2. **Repository name**: `realtime-chat-app-sentiment`
 3. **Description**: `Real-time Chat Application with Sentiment Analysis using ASP.NET Core 8 and Blazor WASM`
 4. **Visibility**: Public
-5. **Initialize with**: README (можно убрать)
-6. Нажмите **Create repository**
+5. **Initialize with**: README (optional)
+6. Click **Create repository**
 
-### 2. Свяжите локальный репозиторий:
+### 2. Link Local Repository:
 ```powershell
-# Замените YOUR_USERNAME на ваш GitHub username
+# Replace YOUR_USERNAME with your GitHub username
 git remote set-url origin https://github.com/YOUR_USERNAME/realtime-chat-app-sentiment.git
 
-# Отправьте код на GitHub
+# Push code to GitHub
 git push -u origin main
 ```
 
-## 🔧 Настройка GitHub Actions
+## 🔧 GitHub Actions Configuration
 
-### 1. Секреты репозитория:
-Перейдите в `Settings > Secrets and variables > Actions` и добавьте:
+### 1. Repository Secrets:
+Go to `Settings > Secrets and variables > Actions` and add:
 
 ```
 AZURE_CREDENTIALS
@@ -55,62 +55,62 @@ AZURE_TEXT_ANALYTICS_KEY
 your-cognitive-services-key
 ```
 
-### 2. Активация GitHub Actions:
-- Файлы воркфлоу уже созданы в `.github/workflows/`
-- После первого push автоматически запустится CI/CD
+### 2. Activate GitHub Actions:
+- Workflow files are already created in `.github/workflows/`
+- CI/CD will start automatically after first push
 
-## 🚀 Автоматический деплой
+## 🚀 Automated Deployment
 
-### Что делают GitHub Actions:
+### What GitHub Actions Do:
 
 1. **Build Workflow** (`.github/workflows/build.yml`):
-   - ✅ Сборка Backend (.NET 8)
-   - ✅ Сборка Frontend (Blazor WASM)
-   - ✅ Запуск E2E тестов
-   - ✅ Создание Docker образов
+   - ✅ Build Backend (.NET 8)
+   - ✅ Build Frontend (Blazor WASM)
+   - ✅ Run E2E tests
+   - ✅ Create Docker images
 
 2. **Deploy Backend** (`.github/workflows/deploy-backend.yml`):
-   - ✅ Деплой Web API на Azure
-   - ✅ Применение миграций базы данных
-   - ✅ Настройка connection strings
+   - ✅ Deploy Web API to Azure
+   - ✅ Apply database migrations
+   - ✅ Configure connection strings
 
 3. **Deploy Frontend** (`.github/workflows/deploy-frontend.yml`):
-   - ✅ Деплой Blazor WASM на Azure
-   - ✅ Настройка CORS
-   - ✅ Оптимизация статических файлов
+   - ✅ Deploy Blazor WASM to Azure
+   - ✅ Configure CORS
+   - ✅ Optimize static files
 
-## 📊 Структура репозитория
+## 📊 Repository Structure
 
 ```
 realtime-chat-app-sentiment/
 ├── .github/workflows/          # CI/CD пайплайны
 ├── backend-wasm/               # ASP.NET Core Web API
 │   ├── src/
-│   │   ├── Domain/            # Entities и Enums
-│   │   ├── Infrastructure/     # DbContext и Repositories  
-│   │   ├── Application/       # Services и Interfaces
-│   │   ├── WebApi/           # Controllers и SignalR Hub
-│   │   └── Tests/            # E2E тесты
+│   │   ├── Domain/            # Entities and Enums
+│   │   ├── Infrastructure/     # DbContext and Repositories  
+│   │   ├── Application/       # Services and Interfaces
+│   │   ├── WebApi/           # Controllers and SignalR Hub
+│   │   └── Tests/            # E2E tests
 │   └── Dockerfile
 ├── frontend/blazor-wasm/       # Blazor WebAssembly
-│   ├── Pages/                # UI компоненты
-│   ├── Components/           # Reusable компоненты
-│   ├── Services/             # SignalR клиент
+│   ├── Pages/                # UI components
+│   ├── Components/           # Reusable components
+│   ├── Services/             # SignalR client
 │   └── Dockerfile
-├── cicd/scripts/              # Скрипты развертывания
+├── cicd/scripts/              # Deployment scripts
 ├── docker-compose.yml         # Local development
 ├── deploy-azure-auto.ps1     # Azure deployment script
 ├── test-deployment.ps1       # Deployment validation
 └── README.md                  # Documentation
 ```
 
-## 🧪 Локальный запуск
+## 🧪 Local Development
 
 ```powershell
-# Запуск через Docker Compose
+# Run via Docker Compose
 docker-compose up -d
 
-# Или локально
+# Or locally
 cd backend-wasm
 dotnet run
 
@@ -118,22 +118,22 @@ cd ../frontend/blazor-wasm
 dotnet run
 ```
 
-## 🌐 Доступные URL после деплоя
+## 🌐 Available URLs After Deployment
 
 - **Frontend**: `https://chatapp-frontend-xxx.azurewebsites.net`
 - **Backend API**: `https://chatapp-backend-xxx.azurewebsites.net`
 - **Swagger**: `https://chatapp-backend-xxx.azurewebsites.net/swagger`
 - **Health Check**: `https://chatapp-backend-xxx.azurewebsites.net/health`
 
-## 📈 Мониторинг
+## 📈 Monitoring
 
 ### GitHub Actions Status:
-- Переходите в `Actions` таб репозитория
-- Смотрите логи сборки и деплоя
-- Проверяйте статус тестов
+- Go to `Actions` tab in repository
+- View build and deploy logs
+- Check test status
 
 ### Azure Monitoring:
-- Application Insights (если настроен)
+- Application Insights (if configured)
 - Azure Monitor alerts
 - Log Analytics
 
@@ -162,37 +162,37 @@ E2E Tests Validation
 ### Common Issues:
 
 1. **Build Failures**:
-   - Проверьте `.csproj` файлы
-   - Убедитесь что все NuGet пакеты доступны
-   - Проверьте синтаксис C# кода
+   - Check `.csproj` files
+   - Ensure all NuGet packages are available
+   - Verify C# code syntax
 
 2. **Deploy Failures**:
-   - Проверьте Azure credentials в Secrets
-   - Убедитесь что ресурсы Azure существуют
-   - Проверьте connection strings
+   - Check Azure credentials in Secrets
+   - Ensure Azure resources exist
+   - Verify connection strings
 
 3. **Test Failures**:
-   - Проверьте тестовые данные
-   - Убедитесь что все зависимости доступны
-   - Посмотрите логи тестов в Actions
+   - Check test data
+   - Ensure all dependencies are available
+   - View test logs in Actions
 
 ### Manual Recovery:
 
 ```powershell
-# Пересобрать и задеплоить вручную
+# Rebuild and redeploy manually
 ./deploy-azure-auto.ps1
 
-# Проверить статус
+# Check status
 ./test-deployment.ps1 -FrontendUrl "https://..." -BackendUrl "https://..."
 ```
 
 ## 📝 Next Steps
 
-1. ✅ Создайте репозиторий на GitHub
-2. ✅ Запушьте код с инструкцией выше
-3. ✅ Настройте Secrets в GitHub
-4. ✅ Запустите первый деплой через Actions
-5. ✅ Проверьте работоспособность
-6. ✅ Настройте мониторинг и alerts
+1. ✅ Create repository on GitHub
+2. ✅ Push code with instructions above
+3. ✅ Configure Secrets in GitHub
+4. ✅ Launch first deployment via Actions
+5. ✅ Verify functionality
+6. ✅ Configure monitoring and alerts
 
-**Готово к продакшн развертыванию!** 🚀
+**Ready for production deployment!** 🚀
